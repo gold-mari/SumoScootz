@@ -1,22 +1,20 @@
-// Code Practice: Slime World
+// Make the Fake: Sumo Scootz
 // Name: Dylan Mahler
-// Date: 2/16/24
 
 let config = {
     type: Phaser.AUTO,
     render: {
         pixelArt: true
     },
-    width: 320,
-    height: 240,
+    width: 800,
+    height: 600,
     physics: {
         default: "arcade",
         arcade: {
             debug: true
         }
     },
-    zoom: 2,
-    scene: [ Overworld ]
+    scene: [ VersusPlay ]
 }
 
 const game = new Phaser.Game(config)
