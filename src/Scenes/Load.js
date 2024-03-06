@@ -1,6 +1,6 @@
 class Load extends Phaser.Scene {
     constructor() {
-        super('loadScene');
+        super("loadScene");
     }
 
     init() {
@@ -12,6 +12,6 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("versusPlayScene");   
+        this.scene.start("keyDefScene");   
     }
 }

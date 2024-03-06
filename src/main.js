@@ -14,7 +14,7 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, VersusPlay ]
+    scene: [ Load, KeyDef, VersusPlay ]
 }
 
 const game = new Phaser.Game(config)
