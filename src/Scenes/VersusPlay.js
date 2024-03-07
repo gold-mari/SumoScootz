@@ -31,6 +31,8 @@ class VersusPlay extends Phaser.Scene {
             upshiftKey: this.KEYS.p2_Upshift,
             downshiftKey: this.KEYS.p2_Downshift
         });
+
+        this.physics.add.collider(this.driver1, this.driver2, null, null, this);
     }
 
     update() {

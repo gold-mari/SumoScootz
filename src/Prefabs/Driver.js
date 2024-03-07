@@ -7,6 +7,8 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);           // add object to existing, displayList, updateList
         scene.physics.add.existing(this);   // add to physics
 
+        this.SPEEDS = [100, 500];
+        this.DRAGS = [0.01, 0.9];
 
         // Controls ===================
         this.leftKey = controls.leftKey;
@@ -16,12 +18,18 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.upshiftKey = controls.upshiftKey;
         this.downshiftKey = controls.downshiftKey;
 
-        // Direction ==================
+        // State ======================
         this.direction = new Phaser.Math.Vector2(0);
+        this.currentSpeed = this.SPEEDS[0];
+        this.currentDrag = this.DRAGS[0];
+
+        this.setDrag(this.currentDrag);
+        this.setDamping(true);
+        this.tint = 0x0000ff;
     }
 
     update() {
-        // MOVEMENT ===========================================================
+        // ACCELERATION =======================================================
         this.direction = new Phaser.Math.Vector2(0);
 
         if (this.leftKey.isDown)    this.direction.x -= 1;
@@ -29,10 +37,21 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         if (this.upKey.isDown)     this.direction.y -= 1;
         if (this.downKey.isDown)   this.direction.y += 1;
 
-        this.direction.normalize()
-        this.setVelocity(250 * this.direction.x, 250 * this.direction.y)
+        this.direction.normalize();
+        this.setAcceleration(this.currentSpeed * this.direction.x, this.currentSpeed * this.direction.y);
 
-        // if (Phaser.Input.Keyboard.JustDown(this.upshiftKey)) console.log(`${this.ID} upshift`);
-        // if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) console.log(`${this.ID} downshift`);
+        // GEAR SHIFTING ======================================================
+        if (Phaser.Input.Keyboard.JustDown(this.upshiftKey)) {
+            this.currentSpeed = this.SPEEDS[1];
+            this.currentDrag = this.DRAGS[1];
+            this.setDrag(this.currentDrag);
+            this.tint = 0xff0000;
+        }    
+        if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) {
+            this.currentSpeed = this.SPEEDS[0];
+            this.currentDrag = this.DRAGS[0];
+            this.setDrag(this.currentDrag);
+            this.tint = 0x0000ff;
+        }
     }
 }
