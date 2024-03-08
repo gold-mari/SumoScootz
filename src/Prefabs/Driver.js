@@ -70,6 +70,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
 
     lost() {
         console.log(`${this.ID} lost!`);
+        this.setAcceleration(0);
         this.setAlpha(0.5);
     }
 }
