@@ -9,6 +9,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
 
         this.SPEEDS = [100, 500];
         this.DRAGS = [0.01, 0.9];
+        this.BOUNCES = [0.5, 1];
 
         // Controls ===================
         this.leftKey = controls.leftKey;
@@ -22,8 +23,10 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.direction = new Phaser.Math.Vector2(0);
         this.currentSpeed = this.SPEEDS[0];
         this.currentDrag = this.DRAGS[0];
+        this.currentBounce = this.BOUNCES[0];
 
         this.setDrag(this.currentDrag);
+        this.setBounce(this.currentBounce);
         this.setDamping(true);
         this.tint = 0x0000ff;
     }
@@ -37,21 +40,24 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         if (this.upKey.isDown)     this.direction.y -= 1;
         if (this.downKey.isDown)   this.direction.y += 1;
 
-        this.direction.normalize();
-        this.setAcceleration(this.currentSpeed * this.direction.x, this.currentSpeed * this.direction.y);
-
         // GEAR SHIFTING ======================================================
         if (Phaser.Input.Keyboard.JustDown(this.upshiftKey)) {
             this.currentSpeed = this.SPEEDS[1];
             this.currentDrag = this.DRAGS[1];
+            this.currentBounce = this.BOUNCES[1];
             this.setDrag(this.currentDrag);
             this.tint = 0xff0000;
         }    
         if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) {
             this.currentSpeed = this.SPEEDS[0];
             this.currentDrag = this.DRAGS[0];
+            this.currentBounce = this.BOUNCES[0];
             this.setDrag(this.currentDrag);
             this.tint = 0x0000ff;
         }
+
+        // MOVEMENT ======================================================
+        this.direction.normalize();
+        this.setAcceleration(this.currentSpeed * this.direction.x, this.currentSpeed * this.direction.y);
     }
 }
