@@ -23,7 +23,7 @@ class VersusPlay extends Phaser.Scene {
             downKey: this.KEYS.p1_Down,
             upshiftKey: this.KEYS.p1_Upshift,
             downshiftKey: this.KEYS.p1_Downshift
-        });
+        }).setCircle(40);
 
         this.driver2 = new Driver("Driver2", this, game.config.width*0.667, game.config.height/2, "car", 0, {
             leftKey: this.KEYS.p2_Left,
@@ -32,7 +32,7 @@ class VersusPlay extends Phaser.Scene {
             downKey: this.KEYS.p2_Down,
             upshiftKey: this.KEYS.p2_Upshift,
             downshiftKey: this.KEYS.p2_Downshift
-        });
+        }).setCircle(40);
 
         this.physics.add.collider(this.driver1, this.driver2, null, null, this);
 
