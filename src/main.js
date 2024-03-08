@@ -18,3 +18,4 @@ let config = {
 }
 
 const game = new Phaser.Game(config)
+const SHOW_STAGE_COLLIDER = true
