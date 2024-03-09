@@ -4,7 +4,7 @@ class VersusPlay extends Phaser.Scene {
     }
 
     init() {
-        this.DELAY_AFTER_END = 1000;
+        this.DELAY_AFTER_END = 2000;
     }
 
     preload() {
@@ -77,6 +77,7 @@ class VersusPlay extends Phaser.Scene {
                     game.settings.winner = 1;
                 }
 
+                this.sound.play("fall");
                 this.gameOver = true;
                 this.time.delayedCall(this.DELAY_AFTER_END, () => {
                     this.scene.start("resultsScene");
