@@ -29,6 +29,14 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(this.currentBounce);
         this.setDamping(true);
         this.tint = 0x0000ff;
+
+        // Label ======================
+        this.label = this.scene.add.text(this.x, this.y-this.height, `${ID}\n▼`, { 
+            color: "#ffff00",
+            fontFamily: "Trebuchet MS",
+            fontSize: "20px",
+            align: "center"
+        }).setOrigin(0.5).setDepth(100);
     }
 
     update() {
@@ -59,6 +67,10 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         // MOVEMENT ======================================================
         this.direction.normalize();
         this.setAcceleration(this.currentSpeed * this.direction.x, this.currentSpeed * this.direction.y);
+
+        // LABEL ======================================================
+        this.label.x = this.x;
+        this.label.y = this.y-this.height
     }
 
     won() {
@@ -71,5 +83,8 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setAcceleration(0);
         this.setAlpha(0.5);
         this.tint = 0x888888;
+
+        this.label.setAlpha(0.5);
+        this.label.text = `${this.ID}\n☠`
     }
 }
