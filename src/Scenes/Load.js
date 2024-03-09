@@ -12,6 +12,6 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("keyDefScene");   
+        this.scene.start("keyDefScene"); 
     }
 }

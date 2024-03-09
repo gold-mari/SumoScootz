@@ -4,7 +4,7 @@ class VersusPlay extends Phaser.Scene {
     }
 
     init() {
-        
+        this.DELAY_AFTER_END = 1000;
     }
 
     preload() {
@@ -14,6 +14,9 @@ class VersusPlay extends Phaser.Scene {
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
         this.gameOver = false;
+        game.settings = {
+            winner: 0
+        };
 
         // Drivers ====================
         this.driver1 = new Driver("Driver1", this, game.config.width*0.333, game.config.height/2, "car", 0, {
@@ -38,8 +41,15 @@ class VersusPlay extends Phaser.Scene {
 
         // Bounds ====================
         this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height/2, 600, 400);
+
+        // Ellipse rendering code from https://labs.phaser.io/view.html?src=src\geom\ellipse\adjust%20size.js .
         if (SHOW_STAGE_COLLIDER || game.config.physics.arcade.debug) {
-            const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x00aaaa } });
+            const graphics = this.add.graphics({ 
+                lineStyle: { 
+                    width: 2, 
+                    color: 0x00aaaa 
+                }
+            });
             graphics.strokeEllipseShape(this.stageBounds);
         }
     }
@@ -57,15 +67,20 @@ class VersusPlay extends Phaser.Scene {
                     // mark driver 1 as a loser and driver 2 as a winner.
                     this.driver1.lost();
                     this.driver2.won();
+                    game.settings.winner = 2;
                 }
                 // if driver 2 fell out...
                 if (!this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
                     // mark driver 1 as a winner and driver 2 as a loser.
                     this.driver1.won();
                     this.driver2.lost();
+                    game.settings.winner = 1;
                 }
 
                 this.gameOver = true;
+                this.time.delayedCall(this.DELAY_AFTER_END, () => {
+                    this.scene.start("resultsScene");
+                });
             }
         }
     }

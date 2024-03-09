@@ -25,9 +25,11 @@ class KeyDef extends Phaser.Scene {
             p2_Up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I),
             p2_Down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K),
             p2_Upshift: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),
-            p2_Downshift: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U)
+            p2_Downshift: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U),
+
+            menu_Primary: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         }
 
-        this.scene.launch("versusPlayScene");   
+        this.scene.launch("versusPlayScene");
     }
 }
