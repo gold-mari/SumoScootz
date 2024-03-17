@@ -4,14 +4,20 @@ class VersusPlay extends Phaser.Scene {
     }
 
     init() {
+        this.SPRITE_SCALE = 3;
+        this.CAMERA_ZOOM = 1;
+
         this.DELAY_AFTER_END = 2000;
-        this.SPRITE_SCALE = 5;
-        this.BODY_RADIUS = 5;
-        this.BODY_OFFSET = new Phaser.Math.Vector2(3,9);
+        this.BODY_RADIUS = 4;
+        this.BODY_OFFSET = new Phaser.Math.Vector2(4,10);
+
+        this.CLOUD_SCROLL_AMOUNT = 0.1;
 
         this.FRONTDRIVER_DEPTH = 20;
         this.BACKDRIVER_DEPTH = 10;
         this.BACKGROUND_DEPTH = 0;
+
+        this.WHO_IS_ON_TOP = "driver1";
     }
 
     preload() {
@@ -25,6 +31,8 @@ class VersusPlay extends Phaser.Scene {
             winner: 0
         };
 
+        this.cameras.main.zoom = this.CAMERA_ZOOM;
+
         // Drivers ====================
         this.driver1 = new Driver("driver1", this, game.config.width*0.333, game.config.height/2, "driver1", 0, {
             leftKey: this.KEYS.p1_Left,
@@ -33,7 +41,7 @@ class VersusPlay extends Phaser.Scene {
             downKey: this.KEYS.p1_Down,
             upshiftKey: this.KEYS.p1_Upshift,
             downshiftKey: this.KEYS.p1_Downshift
-        }).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
+        }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "driver2", 0, {
             leftKey: this.KEYS.p2_Left,
@@ -42,12 +50,20 @@ class VersusPlay extends Phaser.Scene {
             downKey: this.KEYS.p2_Down,
             upshiftKey: this.KEYS.p2_Upshift,
             downshiftKey: this.KEYS.p2_Downshift
-        }).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
+        }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.physics.add.collider(this.driver1, this.driver2, null, null, this);
 
+        // Backround =================
+        this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
+            setScale(this.SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
+        this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1600, "clouds").
+            setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-2);
+        this.stage = this.add.sprite(game.config.width/2, game.config.height*0.51, "stage").
+            setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
+
         // Bounds ====================
-        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height/2, 600, 400);
+        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, 310, 210);
 
         // Ellipse rendering code from https://labs.phaser.io/view.html?src=src\geom\ellipse\adjust%20size.js .
         if (SHOW_STAGE_COLLIDER || game.config.physics.arcade.debug) {
@@ -62,20 +78,24 @@ class VersusPlay extends Phaser.Scene {
     }
 
     update() {
+        this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT;
+
         if (!this.gameOver) {
             if (this.stageBounds.contains(this.driver1.x, this.driver1.y) && 
                 this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
                 // if both drivers remain, keep sending them both updates.
                 this.driver1.update();
                 this.driver2.update();
-                // adjust their depths.
-                if (this.driver1.y > this.driver2.y) {
-                    this.driver1.setDepth(this.FRONTDRIVER_DEPTH);
-                    this.driver2.setDepth(this.BACKDRIVER_DEPTH);
-                } else {
+                // adjust their depths if the relative positions have changed.
+                if (this.driver1.depth != this.BACKDRIVER_DEPTH && this.driver1.y < this.driver2.y) {
                     this.driver1.setDepth(this.BACKDRIVER_DEPTH);
                     this.driver2.setDepth(this.FRONTDRIVER_DEPTH);
                 }
+                else if (this.driver1.depth != this.FRONTDRIVER_DEPTH && this.driver1.y > this.driver2.y) {
+                    this.driver1.setDepth(this.FRONTDRIVER_DEPTH);
+                    this.driver2.setDepth(this.BACKDRIVER_DEPTH);
+                }
+                
             } else {
                 // if driver 1 fell out...
                 if (!this.stageBounds.contains(this.driver1.x, this.driver1.y)) {

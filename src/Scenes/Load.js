@@ -23,8 +23,25 @@ class Load extends Phaser.Scene {
             endFrame: 7
         });
 
+        this.load.image("background", "./assets/background.png");
+        this.load.image("clouds", "./assets/clouds.png");
+        this.load.image("stage", "./assets/stage.png");
+
         // Sound ======================
         this.load.audio("fall", "./assets/sound/fall-sfx.mp3");
+
+        this.load.on('progress', function (value) {
+            console.log(value);
+        });
+                    
+        this.load.on('fileprogress', function (file) {
+            console.log(file.src);
+        });
+
+        this.load.on('complete', function () {
+            console.log('complete');
+            this.scene.start("keyDefScene");
+        }, this);
     }
 
     create() {
@@ -78,7 +95,5 @@ class Load extends Phaser.Scene {
             repeat: -1,
             frames: this.anims.generateFrameNumbers("driver2", { start: 3, end: 3 })
         });
-
-        this.scene.start("keyDefScene"); 
     }
 }

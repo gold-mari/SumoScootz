@@ -6,8 +6,8 @@ let config = {
     render: {
         pixelArt: true
     },
-    width: 800,
-    height: 600,
+    width: 400,
+    height: 300,
     physics: {
         default: "arcade",
         arcade: {
@@ -22,4 +22,4 @@ let config = {
 }
 
 const game = new Phaser.Game(config)
-const SHOW_STAGE_COLLIDER = true
+const SHOW_STAGE_COLLIDER = false

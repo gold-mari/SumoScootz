@@ -29,16 +29,8 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setDrag(this.currentDrag);
         this.setBounce(this.currentBounce);
         this.setDamping(true);
-        // this.tint = 0x0000ff;
 
-        // Label ======================
-        this.labelHeightFactor = 4;
-        this.label = this.scene.add.text(this.x, this.y-(this.height*this.labelHeightFactor), `${ID}\n▼`, { 
-            color: "#ffff00",
-            fontFamily: "Trebuchet MS",
-            fontSize: "20px",
-            align: "center"
-        }).setOrigin(0.5).setDepth(100);
+        this.anims.play(`${this.ID}-${this.directionName}`, true);
     }
 
     update() {
@@ -56,39 +48,40 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
             this.currentDrag = this.DRAGS[1];
             this.currentBounce = this.BOUNCES[1];
             this.setDrag(this.currentDrag);
-            // this.tint = 0xff0000;
         }    
         if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) {
             this.currentSpeed = this.SPEEDS[0];
             this.currentDrag = this.DRAGS[0];
             this.currentBounce = this.BOUNCES[0];
             this.setDrag(this.currentDrag);
-            // this.tint = 0x0000ff;
         }
 
         // MOVEMENT ======================================================
         this.direction.normalize();
         this.setAcceleration(this.currentSpeed * this.direction.x, this.currentSpeed * this.direction.y);
 
-        // LABEL ======================================================
-        this.label.x = this.x;
-        this.label.y = this.y-(this.height*this.labelHeightFactor)
-
         // ANIMATION ======================================================
-        this.updateDirectionName(this.direction);
-        this.anims.play(`${this.ID}-${this.directionName}`, true)
+        let newDirectionName = this.updateDirectionName(this.direction, this.directionName);
+        if (newDirectionName != this.directionName) {
+            this.anims.play(`${this.ID}-${newDirectionName}`, true);
+            console.log("changing direction");
+            this.directionName = newDirectionName;
+        }
+        
     }
 
-    updateDirectionName(direction) {
+    updateDirectionName(directionVector, oldName) {
+        let newName = oldName;
         // Prioritize vertical directions first.
-        if (direction.y == 1) this.directionName = "down";
-        if (direction.y == -1) this.directionName = "up";
-
-        if (direction.x == 1) this.directionName = "right";
-        if (direction.x == -1) this.directionName = "left";
-
-        // Otherwise, return the most recent value.
-        return this.directionName;
+        if (directionVector.y != 0) {
+            if (directionVector.y == 1) newName = "down";
+            if (directionVector.y == -1) newName = "up";
+        } else {
+            if (directionVector.x == 1) newName = "right";
+            if (directionVector.x == -1) newName = "left";
+        }
+        
+        return newName;
     }
 
     won() {
@@ -99,8 +92,5 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
     lost() {
         this.setAcceleration(0);
         this.setAlpha(0.5);
-
-        this.label.setAlpha(0.5);
-        this.label.text = `${this.ID}\n☠`
     }
 }
