@@ -22,6 +22,9 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         // State ======================
         this.direction = new Phaser.Math.Vector2(0);
         this.directionName = "down";
+
+        this.gearName = "slow";
+
         this.currentSpeed = this.SPEEDS[0];
         this.currentDrag = this.DRAGS[0];
         this.currentBounce = this.BOUNCES[0];
@@ -30,30 +33,54 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(this.currentBounce);
         this.setDamping(true);
 
-        this.anims.play(`${this.ID}-${this.directionName}`, true);
+        this.updateAnimation();
     }
 
     update() {
         // ACCELERATION =======================================================
         this.direction = new Phaser.Math.Vector2(0);
+        let moving = false;
 
-        if (this.leftKey.isDown)    this.direction.x -= 1;
-        if (this.rightKey.isDown)  this.direction.x += 1;
-        if (this.upKey.isDown)     this.direction.y -= 1;
-        if (this.downKey.isDown)   this.direction.y += 1;
+        if (this.leftKey.isDown) {
+            this.direction.x -= 1;
+            moving = true;
+        }
+        if (this.rightKey.isDown) {
+            this.direction.x += 1;
+            moving = true;
+        }
+        if (this.upKey.isDown) {
+            this.direction.y -= 1;
+            moving = true;
+        }
+        if (this.downKey.isDown) {
+            this.direction.y += 1;
+            moving = true;
+        }
 
         // GEAR SHIFTING ======================================================
-        if (Phaser.Input.Keyboard.JustDown(this.upshiftKey)) {
-            this.currentSpeed = this.SPEEDS[1];
-            this.currentDrag = this.DRAGS[1];
-            this.currentBounce = this.BOUNCES[1];
-            this.setDrag(this.currentDrag);
-        }    
-        if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) {
-            this.currentSpeed = this.SPEEDS[0];
-            this.currentDrag = this.DRAGS[0];
-            this.currentBounce = this.BOUNCES[0];
-            this.setDrag(this.currentDrag);
+        if (Phaser.Input.Keyboard.JustDown(this.downshiftKey) ||
+            Phaser.Input.Keyboard.JustDown(this.upshiftKey)) {
+            if (this.gearName == "fast") {
+                this.gearName = "slow";
+
+                this.currentSpeed = this.SPEEDS[0];
+                this.currentDrag = this.DRAGS[0];
+                this.currentBounce = this.BOUNCES[0];
+                this.setDrag(this.currentDrag);
+            
+                this.updateAnimation();
+            }
+            else if (this.gearName == "slow") {
+                this.gearName = "fast";
+
+                this.currentSpeed = this.SPEEDS[1];
+                this.currentDrag = this.DRAGS[1];
+                this.currentBounce = this.BOUNCES[1];
+                this.setDrag(this.currentDrag);
+
+                this.updateAnimation();
+            }
         }
 
         // MOVEMENT ======================================================
@@ -63,11 +90,14 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         // ANIMATION ======================================================
         let newDirectionName = this.updateDirectionName(this.direction, this.directionName);
         if (newDirectionName != this.directionName) {
-            this.anims.play(`${this.ID}-${newDirectionName}`, true);
-            console.log("changing direction");
             this.directionName = newDirectionName;
+            this.updateAnimation();
         }
         
+    }
+
+    updateAnimation() {
+        this.anims.play(`${this.ID}-${this.directionName}-${this.gearName}`, true);
     }
 
     updateDirectionName(directionVector, oldName) {

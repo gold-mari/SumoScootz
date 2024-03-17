@@ -34,7 +34,7 @@ class VersusPlay extends Phaser.Scene {
         this.cameras.main.zoom = this.CAMERA_ZOOM;
 
         // Drivers ====================
-        this.driver1 = new Driver("driver1", this, game.config.width*0.333, game.config.height/2, "driver1", 0, {
+        this.driver1 = new Driver("driver1", this, game.config.width*0.333, game.config.height/2, "drivers", 0, {
             leftKey: this.KEYS.p1_Left,
             rightKey: this.KEYS.p1_Right,
             upKey: this.KEYS.p1_Up,
@@ -43,7 +43,7 @@ class VersusPlay extends Phaser.Scene {
             downshiftKey: this.KEYS.p1_Downshift
         }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
-        this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "driver2", 0, {
+        this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "drivers", 8, {
             leftKey: this.KEYS.p2_Left,
             rightKey: this.KEYS.p2_Right,
             upKey: this.KEYS.p2_Up,
@@ -57,9 +57,9 @@ class VersusPlay extends Phaser.Scene {
         // Backround =================
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
             setScale(this.SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
-        this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1600, "clouds").
+        this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1400, "clouds").
             setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-2);
-        this.stage = this.add.sprite(game.config.width/2, game.config.height*0.51, "stage").
+        this.stage = this.add.sprite(game.config.width/2, game.config.height*0.52, "stage").
             setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
 
         // Bounds ====================
@@ -78,7 +78,7 @@ class VersusPlay extends Phaser.Scene {
     }
 
     update() {
-        this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT;
+        this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT*4;
 
         if (!this.gameOver) {
             if (this.stageBounds.contains(this.driver1.x, this.driver1.y) && 
