@@ -21,6 +21,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
 
         // State ======================
         this.direction = new Phaser.Math.Vector2(0);
+        this.directionName = "down";
         this.currentSpeed = this.SPEEDS[0];
         this.currentDrag = this.DRAGS[0];
         this.currentBounce = this.BOUNCES[0];
@@ -28,10 +29,11 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setDrag(this.currentDrag);
         this.setBounce(this.currentBounce);
         this.setDamping(true);
-        this.tint = 0x0000ff;
+        // this.tint = 0x0000ff;
 
         // Label ======================
-        this.label = this.scene.add.text(this.x, this.y-this.height, `${ID}\n▼`, { 
+        this.labelHeightFactor = 4;
+        this.label = this.scene.add.text(this.x, this.y-(this.height*this.labelHeightFactor), `${ID}\n▼`, { 
             color: "#ffff00",
             fontFamily: "Trebuchet MS",
             fontSize: "20px",
@@ -54,14 +56,14 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
             this.currentDrag = this.DRAGS[1];
             this.currentBounce = this.BOUNCES[1];
             this.setDrag(this.currentDrag);
-            this.tint = 0xff0000;
+            // this.tint = 0xff0000;
         }    
         if (Phaser.Input.Keyboard.JustDown(this.downshiftKey)) {
             this.currentSpeed = this.SPEEDS[0];
             this.currentDrag = this.DRAGS[0];
             this.currentBounce = this.BOUNCES[0];
             this.setDrag(this.currentDrag);
-            this.tint = 0x0000ff;
+            // this.tint = 0x0000ff;
         }
 
         // MOVEMENT ======================================================
@@ -70,19 +72,33 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
 
         // LABEL ======================================================
         this.label.x = this.x;
-        this.label.y = this.y-this.height
+        this.label.y = this.y-(this.height*this.labelHeightFactor)
+
+        // ANIMATION ======================================================
+        this.updateDirectionName(this.direction);
+        this.anims.play(`${this.ID}-${this.directionName}`, true)
+    }
+
+    updateDirectionName(direction) {
+        // Prioritize vertical directions first.
+        if (direction.y == 1) this.directionName = "down";
+        if (direction.y == -1) this.directionName = "up";
+
+        if (direction.x == 1) this.directionName = "right";
+        if (direction.x == -1) this.directionName = "left";
+
+        // Otherwise, return the most recent value.
+        return this.directionName;
     }
 
     won() {
         this.setAcceleration(0);
         this.setVelocity(0);
-        this.tint = 0x00ff00;
     }
 
     lost() {
         this.setAcceleration(0);
         this.setAlpha(0.5);
-        this.tint = 0x888888;
 
         this.label.setAlpha(0.5);
         this.label.text = `${this.ID}\n☠`

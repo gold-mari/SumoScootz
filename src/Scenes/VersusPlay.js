@@ -5,6 +5,13 @@ class VersusPlay extends Phaser.Scene {
 
     init() {
         this.DELAY_AFTER_END = 2000;
+        this.SPRITE_SCALE = 5;
+        this.BODY_RADIUS = 5;
+        this.BODY_OFFSET = new Phaser.Math.Vector2(3,9);
+
+        this.FRONTDRIVER_DEPTH = 20;
+        this.BACKDRIVER_DEPTH = 10;
+        this.BACKGROUND_DEPTH = 0;
     }
 
     preload() {
@@ -19,23 +26,23 @@ class VersusPlay extends Phaser.Scene {
         };
 
         // Drivers ====================
-        this.driver1 = new Driver("Driver1", this, game.config.width*0.333, game.config.height/2, "car", 0, {
+        this.driver1 = new Driver("driver1", this, game.config.width*0.333, game.config.height/2, "driver1", 0, {
             leftKey: this.KEYS.p1_Left,
             rightKey: this.KEYS.p1_Right,
             upKey: this.KEYS.p1_Up,
             downKey: this.KEYS.p1_Down,
             upshiftKey: this.KEYS.p1_Upshift,
             downshiftKey: this.KEYS.p1_Downshift
-        }).setCircle(40);
+        }).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
-        this.driver2 = new Driver("Driver2", this, game.config.width*0.667, game.config.height/2, "car", 0, {
+        this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "driver2", 0, {
             leftKey: this.KEYS.p2_Left,
             rightKey: this.KEYS.p2_Right,
             upKey: this.KEYS.p2_Up,
             downKey: this.KEYS.p2_Down,
             upshiftKey: this.KEYS.p2_Upshift,
             downshiftKey: this.KEYS.p2_Downshift
-        }).setCircle(40);
+        }).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.physics.add.collider(this.driver1, this.driver2, null, null, this);
 
@@ -61,6 +68,14 @@ class VersusPlay extends Phaser.Scene {
                 // if both drivers remain, keep sending them both updates.
                 this.driver1.update();
                 this.driver2.update();
+                // adjust their depths.
+                if (this.driver1.y > this.driver2.y) {
+                    this.driver1.setDepth(this.FRONTDRIVER_DEPTH);
+                    this.driver2.setDepth(this.BACKDRIVER_DEPTH);
+                } else {
+                    this.driver1.setDepth(this.BACKDRIVER_DEPTH);
+                    this.driver2.setDepth(this.FRONTDRIVER_DEPTH);
+                }
             } else {
                 // if driver 1 fell out...
                 if (!this.stageBounds.contains(this.driver1.x, this.driver1.y)) {
