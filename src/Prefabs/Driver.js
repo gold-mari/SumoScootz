@@ -8,7 +8,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);   // add to physics
 
         this.SPEEDS = [100, 500];
-        this.DRAGS = [0.01, 0.9];
+        this.DRAGS = [0.001, 0.9];
         this.BOUNCES = [0.5, 1];
 
         // Controls ===================
@@ -16,8 +16,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.rightKey = controls.rightKey;
         this.upKey = controls.upKey;
         this.downKey = controls.downKey;
-        this.upshiftKey = controls.upshiftKey;
-        this.downshiftKey = controls.downshiftKey;
+        this.shiftKey = controls.shiftKey;
 
         // State ======================
         this.direction = new Phaser.Math.Vector2(0);
@@ -59,8 +58,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         }
 
         // GEAR SHIFTING ======================================================
-        if (Phaser.Input.Keyboard.JustDown(this.downshiftKey) ||
-            Phaser.Input.Keyboard.JustDown(this.upshiftKey)) {
+        if (Phaser.Input.Keyboard.JustDown(this.shiftKey)) {
             if (this.gearName == "fast") {
                 this.gearName = "slow";
 

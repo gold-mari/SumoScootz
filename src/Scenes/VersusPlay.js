@@ -39,8 +39,7 @@ class VersusPlay extends Phaser.Scene {
             rightKey: this.KEYS.p1_Right,
             upKey: this.KEYS.p1_Up,
             downKey: this.KEYS.p1_Down,
-            upshiftKey: this.KEYS.p1_Upshift,
-            downshiftKey: this.KEYS.p1_Downshift
+            shiftKey: this.KEYS.p1_Shift
         }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "drivers", 8, {
@@ -48,8 +47,7 @@ class VersusPlay extends Phaser.Scene {
             rightKey: this.KEYS.p2_Right,
             upKey: this.KEYS.p2_Up,
             downKey: this.KEYS.p2_Down,
-            upshiftKey: this.KEYS.p2_Upshift,
-            downshiftKey: this.KEYS.p2_Downshift
+            shiftKey: this.KEYS.p2_Shift
         }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.physics.add.collider(this.driver1, this.driver2, null, null, this);
