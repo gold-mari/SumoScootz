@@ -9,18 +9,9 @@ class Load extends Phaser.Scene {
 
     preload() {
         // Art ========================
-        this.load.image("car", "./assets/car.png", 0);
-        this.load.spritesheet("driver1", "./assets/drivers.png",  {
-            frameWidth: 16,
-            frameHeight: 19,
-            startFrame: 0,
-            endFrame: 3
-        });
-        this.load.spritesheet("driver2", "./assets/drivers.png",  {
-            frameWidth: 16,
-            frameHeight: 19,
-            startFrame: 4,
-            endFrame: 7
+        this.load.spritesheet("drivers", "./assets/drivers.png",  {
+            frameWidth: 18,
+            frameHeight: 21,
         });
 
         this.load.image("background", "./assets/background.png");
@@ -46,54 +37,26 @@ class Load extends Phaser.Scene {
 
     create() {
         // Anims ======================
-        this.anims.create({
-            key: "driver1-up",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver1", { start: 0, end: 0 })
-        });
-        this.anims.create({
-            key: "driver1-left",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver1", { start: 1, end: 1 })
-        });
-        this.anims.create({
-            key: "driver1-right",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver1", { start: 2, end: 2 })
-        });
-        this.anims.create({
-            key: "driver1-down",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver1", { start: 3, end: 3 })
-        });
+        let drivers = ["driver1", "driver2"];
+        let directions = ["up", "left", "right", "down"];
+        let gears = ["slow", "fast"];
 
-        this.anims.create({ 
-            key: "driver2-up",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver2", { start: 0, end: 0 })
-        });
-        this.anims.create({
-            key: "driver2-left",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver2", { start: 1, end: 1 })
-        });
-        this.anims.create({
-            key: "driver2-right",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver2", { start: 2, end: 2 })
-        });
-        this.anims.create({
-            key: "driver2-down",
-            frameRate: 1,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers("driver2", { start: 3, end: 3 })
-        });
+        let framesPerAnim = 1;
+        let i = 0;
+
+        for (let gear of gears) {
+            for (let driver of drivers) {
+                for (let direction of directions) {
+                    this.anims.create({
+                        key: `${driver}-${direction}-${gear}`,
+                        frames: this.anims.generateFrameNumbers("drivers", { 
+                            start: i*framesPerAnim, 
+                            end: (i+1)*framesPerAnim - 1 
+                        })
+                    });
+                    i++;
+                }
+            }
+        }
     }
 }
