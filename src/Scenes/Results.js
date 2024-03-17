@@ -18,7 +18,7 @@ class Results extends Phaser.Scene {
         this.headerText = this.add.text(game.config.width/2, game.config.height*0.3, "WINNER", {
             color: "#ffffff",
             fontFamily: "Trebuchet MS",
-            fontSize: "70px"
+            fontSize: "35px"
         }).setOrigin(0.5).setTint(0xffff00);
 
         this.time.addEvent({
@@ -34,13 +34,13 @@ class Results extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height*0.5, this.getWinnerText(game.settings.winner), { 
             color: "#00ffff",
             fontFamily: "Trebuchet MS",
-            fontSize: "40px"
+            fontSize: "20px"
         }).setOrigin(0.5);
 
         this.add.text(game.config.width/2, game.config.height*0.7, "Press space to replay.", { 
             color: "#ffff00",
             fontFamily: "Trebuchet MS",
-            fontSize: "20px"
+            fontSize: "10px"
         }).setOrigin(0.5);        
     }
 
