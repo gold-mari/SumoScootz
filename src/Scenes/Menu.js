@@ -7,10 +7,6 @@ class Menu extends Phaser.Scene {
         this.OPTION_WIDTH = 0.53;
     }
 
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 

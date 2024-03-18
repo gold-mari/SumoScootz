@@ -3,14 +3,6 @@ class KeyDef extends Phaser.Scene {
         super("keyDefScene");
     }
 
-    init() {
-        
-    }
-
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = {
             p1_Left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),

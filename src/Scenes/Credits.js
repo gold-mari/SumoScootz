@@ -8,10 +8,6 @@ class Credits extends Phaser.Scene {
         this.SCROLL_SPEED = 1.5;
     }
 
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 
@@ -24,6 +20,7 @@ class Credits extends Phaser.Scene {
         this.credits.topHeight = game.config.height*0.75;
         this.credits.bottomHeight = game.config.height*0.25;
         
+        // Scroll arrows
         this.upArrow = this.add.sprite(game.config.width*0.9, game.config.height*0.1, "cursor")
             .setScale(SPRITE_SCALE).setRotation(-0.5*Math.PI);
         this.downArrow = this.add.sprite(game.config.width*0.9, game.config.height*0.9, "cursor")
@@ -58,6 +55,7 @@ class Credits extends Phaser.Scene {
             this.upArrow.setAlpha(1);
         }
 
+        // Arrow 'greying out'
         if (this.credits.y <= this.credits.bottomHeight) {
             this.credits.y = this.credits.bottomHeight;
             this.downArrow.setAlpha(0.5);
@@ -65,6 +63,7 @@ class Credits extends Phaser.Scene {
             this.downArrow.setAlpha(1);
         }
 
+        // Move! That! Cursor!
         this.cursor.y = this.credits.y+this.cursor.yOffset;
     }
 }

@@ -7,14 +7,11 @@ class Results extends Phaser.Scene {
         this.FIREWORKS_DELAY = 3000;   
     }
 
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 
-        this.sound.play("victory");
+        this.music = this.sound.add("victory");
+        this.music.play();
 
         // Text =======================
         this.winnerText = this.add.sprite(game.config.width/2, game.config.height*0.31, "winner").
@@ -55,6 +52,7 @@ class Results extends Phaser.Scene {
                 let rate = Phaser.Math.FloatBetween(0.9, 1.1)
                 this.fireworksSound.rate = rate;
                 this.fireworksSound.play();
+                // 1150 is a bit of a magic number- the boom of the fireworks SFX happens 1.15 seconds in.
                 this.time.delayedCall(1150*rate, () => {
                     this.fireworks.explode(50, game.config.width*x, game.config.height*y);
                 }, this);
@@ -62,20 +60,20 @@ class Results extends Phaser.Scene {
                 this.fireworksTimer.delay = this.FIREWORKS_DELAY * Phaser.Math.FloatBetween(0.8, 1.2);
             }
         });
-
-        
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
             this.sound.play("confirm");
             this.fireworksSound.stop();
+            this.music.stop();
             this.scene.start("menuScene");
         }
 
         if (this.winnerDriver != undefined) {
             this.winnerDriver.update();
 
+            // If we WERE touching the bounds but no longer are...
             if (this.driverTouching && this.winnerDriver.body.blocked.none) {
                 this.driverTouching = false;
             }
@@ -102,11 +100,11 @@ class Results extends Phaser.Scene {
                     shiftKey: this.KEYS.p2_Shift
                 }).anims.play("driver2-win-slow");
                 break;
-            default:
+            default:    // No winner, both players fell out at once.
                 this.winnerText.anims.play("draw");
                 this.winnerText.y = game.config.height*0.45;
                 this.menuText.y = game.config.height*0.6;
-                this.cursor.y = this.menuText.y;
+                this.cursor.y = this.menuText.y+1;
                 return;
         }
 

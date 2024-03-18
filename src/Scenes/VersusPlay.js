@@ -19,10 +19,6 @@ class VersusPlay extends Phaser.Scene {
         this.COLLISION_FX_COOLDOWN = 250;
     }
 
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
         this.gameOver = false;
@@ -93,7 +89,7 @@ class VersusPlay extends Phaser.Scene {
         this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT;
 
         if (!this.gameOver) {
-
+            // If we WERE touching, but no longer are...
             if (!this.cooldownActive && this.driversTouching && 
                 this.driver1.body.touching.none && this.driver2.body.touching.none) {
                 // Delayed call so that we don't spam sound effects on weird edge cases with collisions.
@@ -124,7 +120,7 @@ class VersusPlay extends Phaser.Scene {
                 // if, by some miracle, BOTH fell out...
                 if (!this.stageBounds.contains(this.driver1.x, this.driver1.y) &&
                     !this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
-                    // mark driver 1 as a winner and driver 2 as a loser.
+                    // mark both as losers.
                     this.driver1.lost();
                     this.driver2.lost();
                     game.settings.winner = 0;
@@ -165,13 +161,16 @@ class VersusPlay extends Phaser.Scene {
                 if (this.driver1.gearName == "fast") {
                     this.collisionParticles.explode(50, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
                 }
-            } else { // Different speeds, play the medium one.
+            } else { // Drivers are at different speeds, play the medium SFX.
                 bumpSound = this.sound.add("bump-medium");
                 this.collisionParticles.explode(10, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
             }
 
+            // Randomize pitch a lil bit.
             bumpSound.rate = Phaser.Math.FloatBetween(0.9, 1.1);
             bumpSound.play();
+
+            // Before we weren't touching, but now we are.
             this.driversTouching = true;
         }
     }

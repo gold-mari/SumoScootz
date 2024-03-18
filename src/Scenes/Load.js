@@ -3,10 +3,6 @@ class Load extends Phaser.Scene {
         super("loadScene");
     }
 
-    init() {
-        
-    }
-
     preload() {
         // Art ========================
         this.load.image("background", "./assets/background.png");
@@ -56,8 +52,7 @@ class Load extends Phaser.Scene {
         this.load.audio("victory", "./assets/sound/victoryfanfare.wav");
         this.load.audio("firework", "./assets/sound/firework.mp3");
 
-        this.load.on('complete', function () {
-            console.log('complete');
+        this.load.on('complete', () => {
             this.scene.start("keyDefScene");
         }, this);
     }

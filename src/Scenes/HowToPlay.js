@@ -3,14 +3,6 @@ class HowToPlay extends Phaser.Scene {
         super("howToPlayScene");
     }
 
-    init() {
-
-    }
-
-    preload() {
-        
-    }
-
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 

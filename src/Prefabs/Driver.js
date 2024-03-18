@@ -2,13 +2,14 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
     constructor(ID, scene, x, y, texture, frame, controls) {
         super(scene, x, y, texture, frame);
 
-        this.ID = ID;
+        this.ID = ID;                       // Lotsa stuff is hardcoded to ID, don't like that
+                                            // but it's a small enough project as to not matter.
 
         scene.add.existing(this);           // add object to existing, displayList, updateList
         scene.physics.add.existing(this);   // add to physics
 
-        this.SPEEDS = [25, 125];
-        this.DRAGS = [0.001, 0.9];
+        this.SPEEDS = [25, 125];            // [slow gear, fast gear]
+        this.DRAGS = [0.001, 0.9];          // etc.
         this.BOUNCES = [0.5, 1];
 
         // Controls ===================
