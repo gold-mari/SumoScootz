@@ -58,7 +58,8 @@ class VersusPlay extends Phaser.Scene {
             setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
 
         // Bounds ====================
-        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, game.config.width*0.69, game.config.height*0.72);
+        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, 
+                                                   game.config.width*0.69, game.config.height*0.72);
 
         // Ellipse rendering code from https://labs.phaser.io/view.html?src=src\geom\ellipse\adjust%20size.js .
         if (SHOW_STAGE_COLLIDER || game.config.physics.arcade.debug) {
