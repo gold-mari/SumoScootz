@@ -45,11 +45,15 @@ class Load extends Phaser.Scene {
         this.load.image("confetto", "./assets/confetto.png");
 
         // Sound ======================
+        this.load.audio("select", "./assets/sound/menu-select.wav");
+        this.load.audio("confirm", "./assets/sound/menu-confirm.wav");
+
         this.load.audio("bump-slow", "./assets/sound/bump-slow.wav");
         this.load.audio("bump-medium", "./assets/sound/bump-medium.wav");
         this.load.audio("bump-fast", "./assets/sound/bump-fast.wav");
         this.load.audio("fall", "./assets/sound/fall-sfx.mp3");
 
+        this.load.audio("victory", "./assets/sound/victoryfanfare.wav");
         this.load.audio("firework", "./assets/sound/firework.mp3");
 
         this.load.on('complete', function () {

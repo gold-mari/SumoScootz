@@ -14,6 +14,8 @@ class Results extends Phaser.Scene {
     create() {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 
+        this.sound.play("victory");
+
         // Text =======================
         this.winnerText = this.add.sprite(game.config.width/2, game.config.height*0.31, "winner").
             setScale(SPRITE_SCALE).setDepth(100);
@@ -66,8 +68,9 @@ class Results extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
-            this.scene.start("menuScene");
+            this.sound.play("confirm");
             this.fireworksSound.stop();
+            this.scene.start("menuScene");
         }
 
         if (this.winnerDriver != undefined) {

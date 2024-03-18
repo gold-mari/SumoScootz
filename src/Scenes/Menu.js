@@ -43,6 +43,7 @@ class Menu extends Phaser.Scene {
             this.cursor.index = (this.cursor.index+1)%this.options.length;
             this.cursor.y = this.options[this.cursor.index].y + 1;
             this.spacebar.y = this.cursor.y;
+            this.sound.play("select");
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Up) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Up)) {
@@ -50,9 +51,11 @@ class Menu extends Phaser.Scene {
             if (this.cursor.index < 0) this.cursor.index = this.options.length-1;
             this.cursor.y = this.options[this.cursor.index].y + 1;
             this.spacebar.y = this.cursor.y;
+            this.sound.play("select");
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
+            this.sound.play("confirm");
             switch (this.cursor.index) {
                 case 0: {   // Play
                     this.scene.start("versusPlayScene");
