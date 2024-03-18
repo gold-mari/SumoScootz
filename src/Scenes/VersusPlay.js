@@ -52,11 +52,11 @@ class VersusPlay extends Phaser.Scene {
 
         // Background =================
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
-            setScale(SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
+            setScale(SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-30);
         this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1400, "clouds").
-            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-2);
+            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-20);
         this.stage = this.add.sprite(game.config.width/2, game.config.height*0.52, "stage").
-            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
+            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-10);
 
         // Bounds ====================
         this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, 

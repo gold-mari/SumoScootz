@@ -32,7 +32,23 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(this.currentBounce);
         this.setDamping(true);
 
+        // Visuals ====================
         this.updateAnimation();
+        let lightColor = (ID == "driver1") ? 0x55ffff : 0xff55ff;
+        let darkColor = (ID == "driver1") ? 0x00aaaa : 0xaa00aa;
+
+        this.smoke = scene.add.particles(0, 0, "confetto", {
+            frame: 0,
+            scaleX: { random: false, start: 2, end: 0 },
+            scaleY: { random: false, start: 1, end: 0 },
+            angle: { min: 250, max: 290 },
+            color: [lightColor, lightColor, lightColor, darkColor],
+            speed: { min: 25, max: 50 },
+            gravityX: -this.body.velocity.x,
+            gravityY: -1,
+            lifespan: 750,
+        }).setDepth(this.depth-1).startFollow(this, 0, 5.5);
+        this.smoke.stop();
     }
 
     update() {
@@ -61,6 +77,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         if (Phaser.Input.Keyboard.JustDown(this.shiftKey)) {
             if (this.gearName == "fast") {
                 this.gearName = "slow";
+                this.smoke.stop();
 
                 this.currentSpeed = this.SPEEDS[0];
                 this.currentDrag = this.DRAGS[0];
@@ -71,6 +88,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
             }
             else if (this.gearName == "slow") {
                 this.gearName = "fast";
+                this.smoke.start();
 
                 this.currentSpeed = this.SPEEDS[1];
                 this.currentDrag = this.DRAGS[1];
