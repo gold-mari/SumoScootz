@@ -21,7 +21,7 @@ class Results extends Phaser.Scene {
 
         this.menuText = this.add.sprite(game.config.width/2, game.config.height*0.75, "menu").
             setScale(SPRITE_SCALE).setDepth(0).setTintFill(0x55ff55);
-        this.cursor = this.add.sprite(game.config.width*0.36, this.menuText.y, "cursor").
+        this.cursor = this.add.sprite(game.config.width*0.41, this.menuText.y+1, "cursor").
             setScale(SPRITE_SCALE).setDepth(0).setTintFill(0x55ff55);
         this.cursor.anims.play("cursor");
 
