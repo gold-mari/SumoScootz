@@ -4,7 +4,7 @@ class Results extends Phaser.Scene {
     }
 
     init() {
-        this.FLASH_DELAY = 300;
+        
     }
 
     preload() {
@@ -15,50 +15,57 @@ class Results extends Phaser.Scene {
         this.KEYS = this.scene.get("keyDefScene").KEYS;
 
         // Text =======================
-        this.headerText = this.add.text(game.config.width/2, game.config.height*0.3, "WINNER", {
-            color: "#ffffff",
-            fontFamily: "Trebuchet MS",
-            fontSize: "35px"
-        }).setOrigin(0.5).setTint(0xffff00);
+        this.winnerText = this.add.sprite(game.config.width/2, game.config.height*0.31, "winner").
+            setScale(SPRITE_SCALE).setDepth(100);
+        this.winnerText.anims.play("winner");
 
-        this.time.addEvent({
-            delay: this.FLASH_DELAY,
-            loop: true,
-            callbackScope: this,
-            callback: () => {
-                let nextTint = (this.headerText.tint == 0xffff00) ? 0xff0000 : 0xffff00;
-                this.headerText.setTint(nextTint);
-            }
-        });
+        this.paintWinner(game.settings.winner);
+        
+        this.menuText = this.add.sprite(game.config.width/2, game.config.height*0.75, "menu").
+            setScale(SPRITE_SCALE).setDepth(0);
+        this.cursor = this.add.sprite(game.config.width*0.36, this.menuText.y, "cursor").
+            setScale(SPRITE_SCALE).setDepth(0);
+        this.cursor.anims.play("cursor");
 
-        this.add.text(game.config.width/2, game.config.height*0.5, this.getWinnerText(game.settings.winner), { 
-            color: "#00ffff",
-            fontFamily: "Trebuchet MS",
-            fontSize: "20px"
-        }).setOrigin(0.5);
-
-        this.add.text(game.config.width/2, game.config.height*0.7, "Press space to replay.", { 
-            color: "#ffff00",
-            fontFamily: "Trebuchet MS",
-            fontSize: "10px"
-        }).setOrigin(0.5);        
+        this.winnerDriver.setDepth(50);
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
             this.scene.start("menuScene");
         }
+
+        if (this.winnerDriver != undefined) {
+            this.winnerDriver.update();
+        }
     }
 
-    getWinnerText(winner) {
+    paintWinner(winner) {
         switch (winner) {
             case 1:
-                return "Player One won! Good going!";
+                this.winnerDriver = new Driver("driver1", this, game.config.width/2, game.config.height*0.55, "drivers", 0, {
+                    leftKey: this.KEYS.p1_Left,
+                    rightKey: this.KEYS.p1_Right,
+                    upKey: this.KEYS.p1_Up,
+                    downKey: this.KEYS.p1_Down,
+                    shiftKey: this.KEYS.p1_Shift
+                }).anims.play("driver1-win-slow");
+                break;
             case 2:
-                return "Player Two won! Nice one!";
+                this.winnerDriver = new Driver("driver2", this, game.config.width/2, game.config.height*0.55, "drivers", 8, {
+                    leftKey: this.KEYS.p2_Left,
+                    rightKey: this.KEYS.p2_Right,
+                    upKey: this.KEYS.p2_Up,
+                    downKey: this.KEYS.p2_Down,
+                    shiftKey: this.KEYS.p2_Shift
+                }).anims.play("driver2-win-slow");
+                break;
             default:
-                return "Nobody won? I didn't know that was possible!"
+                // return "Nobody won? I didn't know that was possible!"
+                console.log("no winner");
+                break;
         }
-        
+
+        this.winnerDriver.setOrigin(0.5).setScale(SPRITE_SCALE).setCollideWorldBounds();
     }
 }

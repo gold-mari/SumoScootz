@@ -33,6 +33,12 @@ class Load extends Phaser.Scene {
         this.load.image("clouds", "./assets/clouds.png");
         this.load.image("stage", "./assets/stage.png");
 
+        this.load.spritesheet("winner", "./assets/winner.png", {
+            frameWidth: 54,
+            frameHeight: 13
+        });
+        this.load.image("menu", "./assets/menu.png");
+
         // Sound ======================
         this.load.audio("fall", "./assets/sound/fall-sfx.mp3");
 
@@ -47,6 +53,15 @@ class Load extends Phaser.Scene {
         this.anims.create({
             key: "cursor",
             frames: this.anims.generateFrameNumbers("cursor", { 
+                start: 0, 
+                end: 1
+            }),
+            repeat: -1,
+            frameRate: 3
+        });
+        this.anims.create({
+            key: "winner",
+            frames: this.anims.generateFrameNumbers("winner", { 
                 start: 0, 
                 end: 1
             }),
