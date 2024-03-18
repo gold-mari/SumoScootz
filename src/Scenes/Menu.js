@@ -59,8 +59,8 @@ class Menu extends Phaser.Scene {
                 case 2: {   // Quit
                     game.destroy(true, false);
                     document.getElementById("game").innerHTML = 
-                        `<img src="./assets/boom.gif">
-                        <audio autoplay source src="./assets/sound/boom.mp3" type="audio/mpeg">`
+                        `<img src="./assets/quit/boom.gif">
+                        <audio autoplay source src="./assets/quit/boom.mp3" type="audio/mpeg">`
                     break;
                 }
             }
