@@ -4,7 +4,6 @@ class VersusPlay extends Phaser.Scene {
     }
 
     init() {
-        this.SPRITE_SCALE = 3;
         this.CAMERA_ZOOM = 1;
 
         this.DELAY_AFTER_END = 2000;
@@ -16,8 +15,6 @@ class VersusPlay extends Phaser.Scene {
         this.FRONTDRIVER_DEPTH = 20;
         this.BACKDRIVER_DEPTH = 10;
         this.BACKGROUND_DEPTH = 0;
-
-        this.WHO_IS_ON_TOP = "driver1";
     }
 
     preload() {
@@ -40,7 +37,7 @@ class VersusPlay extends Phaser.Scene {
             upKey: this.KEYS.p1_Up,
             downKey: this.KEYS.p1_Down,
             shiftKey: this.KEYS.p1_Shift
-        }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
+        }).setOrigin(0.5).setScale(SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.driver2 = new Driver("driver2", this, game.config.width*0.667, game.config.height/2, "drivers", 8, {
             leftKey: this.KEYS.p2_Left,
@@ -48,20 +45,20 @@ class VersusPlay extends Phaser.Scene {
             upKey: this.KEYS.p2_Up,
             downKey: this.KEYS.p2_Down,
             shiftKey: this.KEYS.p2_Shift
-        }).setOrigin(0.5).setScale(this.SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
+        }).setOrigin(0.5).setScale(SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
         this.physics.add.collider(this.driver1, this.driver2, null, null, this);
 
         // Backround =================
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
-            setScale(this.SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
+            setScale(SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
         this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1400, "clouds").
-            setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-2);
+            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-2);
         this.stage = this.add.sprite(game.config.width/2, game.config.height*0.52, "stage").
-            setScale(this.SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
+            setScale(SPRITE_SCALE).setDepth(this.BACKGROUND_DEPTH-1);
 
         // Bounds ====================
-        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, 310, 210);
+        this.stageBounds = new Phaser.Geom.Ellipse(game.config.width/2, game.config.height*0.51, game.config.width*0.69, game.config.height*0.72);
 
         // Ellipse rendering code from https://labs.phaser.io/view.html?src=src\geom\ellipse\adjust%20size.js .
         if (SHOW_STAGE_COLLIDER || game.config.physics.arcade.debug) {
@@ -76,7 +73,7 @@ class VersusPlay extends Phaser.Scene {
     }
 
     update() {
-        this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT*4;
+        this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT;
 
         if (!this.gameOver) {
             if (this.stageBounds.contains(this.driver1.x, this.driver1.y) && 

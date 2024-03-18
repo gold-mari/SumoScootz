@@ -7,7 +7,7 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);           // add object to existing, displayList, updateList
         scene.physics.add.existing(this);   // add to physics
 
-        this.SPEEDS = [100, 500];
+        this.SPEEDS = [25, 125];
         this.DRAGS = [0.001, 0.9];
         this.BOUNCES = [0.5, 1];
 
@@ -115,10 +115,19 @@ class Driver extends Phaser.Physics.Arcade.Sprite {
     won() {
         this.setAcceleration(0);
         this.setVelocity(0);
+        this.anims.play(`${this.ID}-${"win"}-${this.gearName}`, true);
     }
 
     lost() {
         this.setAcceleration(0);
+        let v = this.body.velocity;
+        this.setVelocity(v.x*0.25, v.y*0.25);
         this.setAlpha(0.5);
+
+        this.scene.tweens.add({
+            targets: this,
+            scale: {value: 0, duration: 1000, ease: "Linear"},            
+            angle: {value: 180, duration: 1000, ease: "Linear"}
+        });
     }
 }

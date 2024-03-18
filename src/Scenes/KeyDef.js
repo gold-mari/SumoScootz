@@ -28,6 +28,6 @@ class KeyDef extends Phaser.Scene {
             menu_Primary: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         }
 
-        this.scene.launch("versusPlayScene");
+        this.scene.launch("menuScene");
     }
 }
