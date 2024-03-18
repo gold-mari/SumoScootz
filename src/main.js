@@ -6,8 +6,8 @@ let config = {
     render: {
         pixelArt: true
     },
-    width: 400,
-    height: 300,
+    width: 150,
+    height: 100,
     physics: {
         default: "arcade",
         arcade: {
@@ -16,10 +16,11 @@ let config = {
     },
     scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        // autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [ Load, KeyDef, VersusPlay, Results ]
+    scene: [ Load, KeyDef, Menu, VersusPlay, Results ]
 }
 
 const game = new Phaser.Game(config)
 const SHOW_STAGE_COLLIDER = false
+const SPRITE_SCALE = 1
