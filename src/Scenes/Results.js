@@ -4,7 +4,7 @@ class Results extends Phaser.Scene {
     }
 
     init() {
-        this.FIREWORKS_DELAY = 2000;   
+        this.FIREWORKS_DELAY = 3000;   
     }
 
     preload() {
@@ -38,9 +38,11 @@ class Results extends Phaser.Scene {
             scale: { random: false, start: 1, end: 0 },
             speed: { min: 50, max: 100 },
             gravityY: 120,
-            frequency: -1
+            frequency: -1,
+            lifespan: 1500
         }).setDepth(200);
-
+        this.fireworksSound = this.sound.add("firework");
+        
         this.fireworksTimer = this.time.addEvent({
             delay: this.FIREWORKS_DELAY,
             loop: true,
@@ -48,7 +50,14 @@ class Results extends Phaser.Scene {
             callback: () => {
                 let x = Phaser.Math.FloatBetween(0.2, 0.8);
                 let y = Phaser.Math.FloatBetween(0.2, 0.8);
-                this.fireworks.explode(50, game.config.width*x, game.config.height*y);
+                let rate = Phaser.Math.FloatBetween(0.9, 1.1)
+                this.fireworksSound.rate = rate;
+                this.fireworksSound.play();
+                this.time.delayedCall(1150*rate, () => {
+                    this.fireworks.explode(50, game.config.width*x, game.config.height*y);
+                }, this);
+
+                this.fireworksTimer.delay = this.FIREWORKS_DELAY * Phaser.Math.FloatBetween(0.8, 1.2);
             }
         });
 
@@ -58,6 +67,7 @@ class Results extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
             this.scene.start("menuScene");
+            this.fireworksSound.stop();
         }
 
         if (this.winnerDriver != undefined) {
@@ -101,12 +111,14 @@ class Results extends Phaser.Scene {
         this.winnerDriver.body.collideWorldBounds = true;
         this.winnerDriver.body.onWorldBounds = true;
         this.physics.world.on("worldbounds", this.handleCollision, this);
+        this.bumpSound = this.sound.add("bump-slow");
     }
 
     handleCollision()
     {
         if (!this.driverTouching) {
-            this.sound.play("bump-slow");
+            this.bumpSound.rate = Phaser.Math.FloatBetween(0.9, 1.1);
+            this.bumpSound.play();
             this.driverTouching = true;
         }
     }

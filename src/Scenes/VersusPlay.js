@@ -157,17 +157,21 @@ class VersusPlay extends Phaser.Scene {
     {
         // Impact FX!
         if (!this.driversTouching) {
+            let bumpSound = undefined;
+
             if (this.driver1.gearName == this.driver2.gearName) {
-                this.sound.play(`bump-${this.driver1.gearName}`);
+                bumpSound = this.sound.add(`bump-${this.driver1.gearName}`);
 
                 if (this.driver1.gearName == "fast") {
                     this.collisionParticles.explode(50, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
                 }
             } else { // Different speeds, play the medium one.
-                this.sound.play("bump-medium");
+                bumpSound = this.sound.add("bump-medium");
                 this.collisionParticles.explode(10, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
             }
 
+            bumpSound.rate = Phaser.Math.FloatBetween(0.9, 1.1);
+            bumpSound.play();
             this.driversTouching = true;
         }
     }
