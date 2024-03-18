@@ -59,17 +59,15 @@ class Menu extends Phaser.Scene {
                     break;
                 }
                 case 1: {   // How To Play
-                    console.log("GOING TO HOW TO PLAY.");
                     this.scene.start("howToPlayScene");
                     break;
                 }
                 case 2: {   // Credits
-                    console.log("GOING TO CREDITS.");
                     this.scene.start("creditsScene");
                     break;
                 }
                 case 3: {   // Quit
-                    game.destroy(true, false);
+                    game.destroy(true, true);
                     document.getElementById("game").innerHTML = 
                         `<img src="./assets/quit/boom.gif">
                         <audio autoplay source src="./assets/quit/boom.mp3" type="audio/mpeg">`

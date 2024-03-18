@@ -20,6 +20,7 @@ class Load extends Phaser.Scene {
             frameHeight: 5
         });
         this.load.image("spacebar", "./assets/spacebar.png");
+        this.load.image("howtoplay", "./assets/howtoplay.png");
 
         this.load.image("credits", "./assets/credits.png");
 

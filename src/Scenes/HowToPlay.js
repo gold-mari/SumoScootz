@@ -4,7 +4,7 @@ class HowToPlay extends Phaser.Scene {
     }
 
     init() {
-        this.TEXT_WIDTH = 0.525;
+
     }
 
     preload() {
@@ -17,11 +17,12 @@ class HowToPlay extends Phaser.Scene {
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
             setScale(SPRITE_SCALE*4);
 
-        this.versusText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.62, "menu-options", 0).
+        this.instructions = this.add.sprite(game.config.width*0.5, game.config.height*0.5, "howtoplay", 0).
             setScale(SPRITE_SCALE);
         
-        this.cursor = this.add.sprite(game.config.width*0.375, this.versusText.y+1, "cursor").
+        this.cursor = this.add.sprite(game.config.width*0.41, game.config.height*0.88, "cursor").
             setScale(SPRITE_SCALE);
+        this.cursor.anims.play("cursor");
     }
 
     update() {
