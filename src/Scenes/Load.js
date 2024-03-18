@@ -13,15 +13,19 @@ class Load extends Phaser.Scene {
         this.load.image("logo", "./assets/logo.png");
         this.load.spritesheet("menu-options", "./assets/menu-options.png",  {
             frameWidth: 42,
-            frameHeight: 6,
+            frameHeight: 6
         });
-        this.load.image("cursor", "./assets/cursor.png");
+        this.load.spritesheet("cursor", "./assets/cursor.png", {
+            frameWidth: 5,
+            frameHeight: 5
+        });
+        this.load.image("spacebar", "./assets/spacebar.png");
 
         this.load.image("credits", "./assets/credits.png");
 
         this.load.spritesheet("drivers", "./assets/drivers.png",  {
             frameWidth: 18,
-            frameHeight: 21,
+            frameHeight: 21
         });
 
         this.load.image("background", "./assets/background.png");
@@ -38,7 +42,18 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        // Anims ======================
+        // Misc anims ========================
+        this.anims.create({
+            key: "cursor",
+            frames: this.anims.generateFrameNumbers("cursor", { 
+                start: 0, 
+                end: 1
+            }),
+            repeat: -1,
+            frameRate: 3
+        });
+
+        // Driver anims ======================
         let drivers = ["driver1", "driver2"];
         let directions = ["up", "left", "right", "down", "win"];
         let gears = ["slow", "fast"];

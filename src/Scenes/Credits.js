@@ -32,6 +32,7 @@ class Credits extends Phaser.Scene {
         this.cursor = this.add.sprite(game.config.width*0.245, game.config.height*0.85, "cursor")
             .setScale(SPRITE_SCALE);
         this.cursor.yOffset = this.cursor.y-this.credits.bottomHeight;
+        this.cursor.anims.play("cursor");
     }
 
     update() {

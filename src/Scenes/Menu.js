@@ -30,6 +30,9 @@ class Menu extends Phaser.Scene {
 
         this.cursor = this.add.sprite(game.config.width*0.36, this.versusText.y+1, "cursor").
             setScale(SPRITE_SCALE);
+        this.cursor.anims.play("cursor");
+        this.spacebar = this.add.sprite(game.config.width*0.25, this.versusText.y+1, "spacebar").
+            setScale(SPRITE_SCALE);
 
         this.options = [this.versusText, this.howToPlayText, this.creditsText, this.quitText];
         this.cursor.index = 0;
@@ -39,12 +42,14 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Down) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Down)) {
             this.cursor.index = (this.cursor.index+1)%this.options.length;
             this.cursor.y = this.options[this.cursor.index].y + 1;
+            this.spacebar.y = this.cursor.y;
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Up) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Up)) {
             this.cursor.index--;
             if (this.cursor.index < 0) this.cursor.index = this.options.length-1;
             this.cursor.y = this.options[this.cursor.index].y + 1;
+            this.spacebar.y = this.cursor.y;
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
