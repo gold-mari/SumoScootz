@@ -18,7 +18,7 @@ let config = {
         mode: Phaser.Scale.FIT,
         // autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [ Load, KeyDef, Menu, VersusPlay, Results ]
+    scene: [ Load, KeyDef, Menu, HowToPlay, Credits, VersusPlay, Results ]
 }
 
 const game = new Phaser.Game(config)

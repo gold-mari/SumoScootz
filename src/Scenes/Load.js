@@ -12,10 +12,12 @@ class Load extends Phaser.Scene {
         this.load.image("background", "./assets/background.png");
         this.load.image("logo", "./assets/logo.png");
         this.load.spritesheet("menu-options", "./assets/menu-options.png",  {
-            frameWidth: 36,
+            frameWidth: 42,
             frameHeight: 6,
         });
         this.load.image("cursor", "./assets/cursor.png");
+
+        this.load.image("credits", "./assets/credits.png");
 
         this.load.spritesheet("drivers", "./assets/drivers.png",  {
             frameWidth: 18,

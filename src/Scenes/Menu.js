@@ -4,7 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     init() {
-        this.OPTION_WIDTH = 0.525;
+        this.OPTION_WIDTH = 0.53;
     }
 
     preload() {
@@ -16,30 +16,32 @@ class Menu extends Phaser.Scene {
 
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
             setScale(SPRITE_SCALE*4);
-        this.logo = this.add.sprite(game.config.width/2, game.config.height*0.34, "logo").
+        this.logo = this.add.sprite(game.config.width/2, game.config.height*0.31, "logo").
             setScale(SPRITE_SCALE);
 
-        this.versusText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.62, "menu-options", 0).
+        this.versusText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.59, "menu-options", 0).
             setScale(SPRITE_SCALE);
-        this.creditsText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.71, "menu-options", 1).
+        this.howToPlayText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.68, "menu-options", 1).
             setScale(SPRITE_SCALE);
-        this.quitText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.80, "menu-options", 2).
+        this.creditsText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.77, "menu-options", 2).
+            setScale(SPRITE_SCALE);
+        this.quitText = this.add.sprite(game.config.width*this.OPTION_WIDTH, game.config.height*0.86, "menu-options", 3).
             setScale(SPRITE_SCALE);
 
-        this.cursor = this.add.sprite(game.config.width*0.375, this.versusText.y+1, "cursor").
+        this.cursor = this.add.sprite(game.config.width*0.36, this.versusText.y+1, "cursor").
             setScale(SPRITE_SCALE);
 
-        this.options = [this.versusText, this.creditsText, this.quitText];
+        this.options = [this.versusText, this.howToPlayText, this.creditsText, this.quitText];
         this.cursor.index = 0;
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Down) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Down) ) {
+        if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Down) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Down)) {
             this.cursor.index = (this.cursor.index+1)%this.options.length;
             this.cursor.y = this.options[this.cursor.index].y + 1;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Up) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Up) ) {
+        if (Phaser.Input.Keyboard.JustDown(this.KEYS.p1_Up) || Phaser.Input.Keyboard.JustDown(this.KEYS.p2_Up)) {
             this.cursor.index--;
             if (this.cursor.index < 0) this.cursor.index = this.options.length-1;
             this.cursor.y = this.options[this.cursor.index].y + 1;
@@ -51,12 +53,17 @@ class Menu extends Phaser.Scene {
                     this.scene.start("versusPlayScene");
                     break;
                 }
-                case 1: {   // Credits
-                    console.log("GOING TO CREDITS.");
-                    this.scene.start("versusPlayScene");
+                case 1: {   // How To Play
+                    console.log("GOING TO HOW TO PLAY.");
+                    this.scene.start("howToPlayScene");
                     break;
                 }
-                case 2: {   // Quit
+                case 2: {   // Credits
+                    console.log("GOING TO CREDITS.");
+                    this.scene.start("creditsScene");
+                    break;
+                }
+                case 3: {   // Quit
                     game.destroy(true, false);
                     document.getElementById("game").innerHTML = 
                         `<img src="./assets/quit/boom.gif">
