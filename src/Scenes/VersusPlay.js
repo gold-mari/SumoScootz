@@ -47,9 +47,10 @@ class VersusPlay extends Phaser.Scene {
             shiftKey: this.KEYS.p2_Shift
         }).setOrigin(0.5).setScale(SPRITE_SCALE).setCircle(this.BODY_RADIUS,this.BODY_OFFSET.x,this.BODY_OFFSET.y);
 
-        this.physics.add.collider(this.driver1, this.driver2, null, null, this);
+        this.physics.add.collider(this.driver1, this.driver2, this.handleCollision, null, this);
+        this.driversTouching = false;
 
-        // Backround =================
+        // Background =================
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
             setScale(SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-3);
         this.clouds = this.add.tileSprite(game.config.width/2, game.config.height/2, 1600, 1400, "clouds").
@@ -77,6 +78,12 @@ class VersusPlay extends Phaser.Scene {
         this.clouds.tilePositionX += this.CLOUD_SCROLL_AMOUNT;
 
         if (!this.gameOver) {
+
+            if (this.driversTouching && this.driver1.body.touching.none && this.driver2.body.touching.none) {
+                this.driversTouching = false;
+            }
+
+            // Check for stage bounding.
             if (this.stageBounds.contains(this.driver1.x, this.driver1.y) && 
                 this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
                 // if both drivers remain, keep sending them both updates.
@@ -114,6 +121,20 @@ class VersusPlay extends Phaser.Scene {
                     this.scene.start("resultsScene");
                 });
             }
+        }
+    }
+
+    handleCollision()
+    {
+        // Impact SFX!
+        if (!this.driversTouching) {
+            if (this.driver1.gearName == this.driver2.gearName) {
+                this.sound.play(`bump-${this.driver1.gearName}`);
+            } else { // Different speeds, play the medium one.
+                this.sound.play("bump-medium");
+            }
+
+            this.driversTouching = true;
         }
     }
 }

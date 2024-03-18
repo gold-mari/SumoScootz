@@ -41,6 +41,9 @@ class Load extends Phaser.Scene {
 
         // Sound ======================
         this.load.audio("fall", "./assets/sound/fall-sfx.mp3");
+        this.load.audio("bump-slow", "./assets/sound/bump-slow.wav");
+        this.load.audio("bump-medium", "./assets/sound/bump-medium.wav");
+        this.load.audio("bump-fast", "./assets/sound/bump-fast.wav");
 
         this.load.on('complete', function () {
             console.log('complete');
