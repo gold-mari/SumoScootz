@@ -46,7 +46,7 @@ class Results extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.KEYS.menu_Primary)) {
-            this.scene.start("versusPlayScene");
+            this.scene.start("menuScene");
         }
     }
 
