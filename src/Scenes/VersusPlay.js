@@ -15,6 +15,8 @@ class VersusPlay extends Phaser.Scene {
         this.FRONTDRIVER_DEPTH = 20;
         this.BACKDRIVER_DEPTH = 10;
         this.BACKGROUND_DEPTH = 0;
+
+        this.COLLISION_FX_COOLDOWN = 250;
     }
 
     preload() {
@@ -50,6 +52,19 @@ class VersusPlay extends Phaser.Scene {
         this.physics.add.collider(this.driver1, this.driver2, this.handleCollision, null, this);
         this.driversTouching = false;
 
+        this.collisionParticles = this.add.particles(0, 0, "confetto", {
+            frame: 0,
+            angle: { min: 0, max: 360 },
+            rotate: { min: 0, max: 360 },
+            color: [0xff0000, 0xff0000, 0xffff00, 0xffff00],
+            scaleX: { random: false, start: 3, end: 1.5 },
+            scaleY: { random: false, start: 3, end: 0.5 },
+            speed: { min: 20, max: 100 },
+            frequency: -1,
+            lifespan: 200,
+        }).setDepth(this.BACKGROUND_DEPTH-5);
+        this.cooldownActive = false;
+
         // Background =================
         this.background = this.add.sprite(game.config.width/2, game.config.height/2, "background").
             setScale(SPRITE_SCALE*4).setDepth(this.BACKGROUND_DEPTH-30);
@@ -79,8 +94,14 @@ class VersusPlay extends Phaser.Scene {
 
         if (!this.gameOver) {
 
-            if (this.driversTouching && this.driver1.body.touching.none && this.driver2.body.touching.none) {
-                this.driversTouching = false;
+            if (!this.cooldownActive && this.driversTouching && 
+                this.driver1.body.touching.none && this.driver2.body.touching.none) {
+                // Delayed call so that we don't spam sound effects on weird edge cases with collisions.
+                this.cooldownActive = true;
+                this.time.delayedCall(this.COLLISION_FX_COOLDOWN, () => {
+                    this.driversTouching = false;
+                    this.cooldownActive = false;
+                }, [], this);
             }
 
             // Check for stage bounding.
@@ -134,12 +155,17 @@ class VersusPlay extends Phaser.Scene {
 
     handleCollision()
     {
-        // Impact SFX!
+        // Impact FX!
         if (!this.driversTouching) {
             if (this.driver1.gearName == this.driver2.gearName) {
                 this.sound.play(`bump-${this.driver1.gearName}`);
+
+                if (this.driver1.gearName == "fast") {
+                    this.collisionParticles.explode(50, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
+                }
             } else { // Different speeds, play the medium one.
                 this.sound.play("bump-medium");
+                this.collisionParticles.explode(10, (this.driver1.x+this.driver2.x)/2, (this.driver1.y+this.driver2.y)/2);
             }
 
             this.driversTouching = true;
