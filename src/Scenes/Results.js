@@ -4,7 +4,7 @@ class Results extends Phaser.Scene {
     }
 
     init() {
-        
+        this.FIREWORKS_DELAY = 2000;   
     }
 
     preload() {
@@ -25,9 +25,34 @@ class Results extends Phaser.Scene {
             setScale(SPRITE_SCALE).setDepth(0).setTintFill(0x55ff55);
         this.cursor.anims.play("cursor");
 
+        // Winner Driver stuffs =======
         this.driverTouching = false;
         this.winnerDriver = undefined;
         this.paintWinner(game.settings.winner);
+
+        // Particles ==================
+        this.fireworks = this.add.particles(0, 0, "confetto", {
+            frame: 0,
+            angle: { min: 0, max: 360 },
+            color: [0xff0000, 0xffff00, 0xffff00, 0xffff00],
+            scale: { random: false, start: 1, end: 0 },
+            speed: { min: 50, max: 100 },
+            gravityY: 120,
+            frequency: -1
+        }).setDepth(200);
+
+        this.fireworksTimer = this.time.addEvent({
+            delay: this.FIREWORKS_DELAY,
+            loop: true,
+            callbackScope: this,
+            callback: () => {
+                let x = Phaser.Math.FloatBetween(0.2, 0.8);
+                let y = Phaser.Math.FloatBetween(0.2, 0.8);
+                this.fireworks.explode(50, game.config.width*x, game.config.height*y);
+            }
+        });
+
+        
     }
 
     update() {

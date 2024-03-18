@@ -42,6 +42,7 @@ class Load extends Phaser.Scene {
             frameHeight: 13
         });
         this.load.image("menu", "./assets/menu.png");
+        this.load.image("confetto", "./assets/confetto.png");
 
         // Sound ======================
         this.load.audio("fall", "./assets/sound/fall-sfx.mp3");
