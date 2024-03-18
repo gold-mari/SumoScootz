@@ -100,19 +100,27 @@ class VersusPlay extends Phaser.Scene {
                 }
                 
             } else {
-                // if driver 1 fell out...
-                if (!this.stageBounds.contains(this.driver1.x, this.driver1.y)) {
-                    // mark driver 1 as a loser and driver 2 as a winner.
+                // if, by some miracle, BOTH fell out...
+                if (!this.stageBounds.contains(this.driver1.x, this.driver1.y) &&
+                    !this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
+                    // mark driver 1 as a winner and driver 2 as a loser.
                     this.driver1.lost();
-                    this.driver2.won();
-                    game.settings.winner = 2;
+                    this.driver2.lost();
+                    game.settings.winner = 0;
                 }
-                // if driver 2 fell out...
-                if (!this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
+                // else if driver 2 fell out...
+                else if (!this.stageBounds.contains(this.driver2.x, this.driver2.y)) {
                     // mark driver 1 as a winner and driver 2 as a loser.
                     this.driver1.won();
                     this.driver2.lost();
                     game.settings.winner = 1;
+                }
+                // else if driver 1 fell out...
+                else if (!this.stageBounds.contains(this.driver1.x, this.driver1.y)) {
+                    // mark driver 1 as a loser and driver 2 as a winner.
+                    this.driver1.lost();
+                    this.driver2.won();
+                    game.settings.winner = 2;
                 }
 
                 this.sound.play("fall");

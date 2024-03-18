@@ -37,6 +37,10 @@ class Load extends Phaser.Scene {
             frameWidth: 54,
             frameHeight: 13
         });
+        this.load.spritesheet("draw", "./assets/draw.png", {
+            frameWidth: 41,
+            frameHeight: 13
+        });
         this.load.image("menu", "./assets/menu.png");
 
         // Sound ======================
@@ -55,19 +59,19 @@ class Load extends Phaser.Scene {
         // Misc anims ========================
         this.anims.create({
             key: "cursor",
-            frames: this.anims.generateFrameNumbers("cursor", { 
-                start: 0, 
-                end: 1
-            }),
+            frames: this.anims.generateFrameNumbers("cursor", { start: 0, end: 1 }),
             repeat: -1,
             frameRate: 3
         });
         this.anims.create({
             key: "winner",
-            frames: this.anims.generateFrameNumbers("winner", { 
-                start: 0, 
-                end: 1
-            }),
+            frames: this.anims.generateFrameNumbers("winner", { start: 0, end: 1 }),
+            repeat: -1,
+            frameRate: 3
+        });
+        this.anims.create({
+            key: "draw",
+            frames: this.anims.generateFrameNumbers("draw", { start: 0, end: 1 }),
             repeat: -1,
             frameRate: 3
         });

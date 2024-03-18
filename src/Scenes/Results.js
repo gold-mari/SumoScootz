@@ -19,16 +19,15 @@ class Results extends Phaser.Scene {
             setScale(SPRITE_SCALE).setDepth(100);
         this.winnerText.anims.play("winner");
 
-        this.paintWinner(game.settings.winner);
-        
         this.menuText = this.add.sprite(game.config.width/2, game.config.height*0.75, "menu").
             setScale(SPRITE_SCALE).setDepth(0).setTintFill(0x55ff55);
         this.cursor = this.add.sprite(game.config.width*0.36, this.menuText.y, "cursor").
             setScale(SPRITE_SCALE).setDepth(0).setTintFill(0x55ff55);
         this.cursor.anims.play("cursor");
 
-        this.winnerDriver.setDepth(50);
         this.driverTouching = false;
+        this.winnerDriver = undefined;
+        this.paintWinner(game.settings.winner);
     }
 
     update() {
@@ -42,8 +41,6 @@ class Results extends Phaser.Scene {
             if (this.driverTouching && this.winnerDriver.body.blocked.none) {
                 this.driverTouching = false;
             }
-
-            console.log(this.driverTouching);
         }
     }
 
@@ -68,12 +65,14 @@ class Results extends Phaser.Scene {
                 }).anims.play("driver2-win-slow");
                 break;
             default:
-                // return "Nobody won? I didn't know that was possible!"
-                console.log("no winner");
-                break;
+                this.winnerText.anims.play("draw");
+                this.winnerText.y = game.config.height*0.45;
+                this.menuText.y = game.config.height*0.6;
+                this.cursor.y = this.menuText.y;
+                return;
         }
 
-        this.winnerDriver.setOrigin(0.5).setScale(SPRITE_SCALE);
+        this.winnerDriver.setOrigin(0.5).setScale(SPRITE_SCALE).setDepth(50);
         this.winnerDriver.body.collideWorldBounds = true;
         this.winnerDriver.body.onWorldBounds = true;
         this.physics.world.on("worldbounds", this.handleCollision, this);
